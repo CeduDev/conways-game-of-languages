@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: conway
+Version: 1.0.0
+Summary: Conway's Game of Life in your terminal
+Author-email: Cedric Neergaard <cedric.neergaard@gmail.com>
+Description-Content-Type: text/markdown
+Requires-Dist: tomli; python_version < "3.11"
+
+# Python version
+
+Inspiration and guide found from here: <https://realpython.com/conway-game-of-life-python/>

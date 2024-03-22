@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+conway/__init__.py
+conway/__main__.py
+conway/cli.py
+conway/grid.py
+conway/patterns.py
+conway/views.py
+conway.egg-info/PKG-INFO
+conway.egg-info/SOURCES.txt
+conway.egg-info/dependency_links.txt
+conway.egg-info/entry_points.txt
+conway.egg-info/requires.txt
+conway.egg-info/top_level.txt
