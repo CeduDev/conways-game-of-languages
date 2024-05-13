@@ -9,9 +9,8 @@ fn main() -> io::Result<()> {
         [(8, 7), (8, 8), (8, 9)].to_vec(), 
         "Blinker Pattern".to_string(),
         10,
-        Duration::from_secs_f32(0.2)
+        Duration::from_secs_f32(0.5)
     );
-    game.init()?;
     game.run()?;
 
     Ok(())
