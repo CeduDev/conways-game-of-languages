@@ -30,7 +30,7 @@ struct Args {
     generations: u16,
 
     /// Speed in seconds of each generation
-    #[arg(short, long, default_value_t = 1.0)]
+    #[arg(short, long, default_value_t = 0.2)]
     speed: f32
 }
 
