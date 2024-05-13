@@ -56,12 +56,17 @@ impl Conway {
   pub fn run(&mut self) -> io::Result<()> {
     self.init()?;
 
-    for i in 0..self.generations {
-      queue!(
-        self.stdout,
-        cursor::MoveTo(0, 0),
-        style::Print(i)
-      )?;
+    for _ in 0..self.generations {
+      self.alive_cells.evolve();
+
+      for c in 0..self.alive_cells.cells.len() - 1 {
+          let cell = self.alive_cells.cells[c];
+          queue!(
+            self.stdout,
+            cursor::MoveTo(cell.0, cell.1),
+            style::Print(self.alive.as_str())
+          )?;
+      }      
 
       self.stdout.flush()?;
 
@@ -79,8 +84,8 @@ impl Default for Conway {
         height: 20,
         width: 40,
         stdout: stdout(),
-        text: "jee".to_string(),
-        alive_cells: AliveCells::new([(10, 10), (10, 11), (11, 10), (11, 11)].to_vec()),
+        text: "Blinker Pattern".to_string(),
+        alive_cells: AliveCells::new([(8, 7), (8, 8), (8, 9)].to_vec()),
         alive: "♥".to_string(),
         dead: "‧".to_string(),
         generations: 10,
