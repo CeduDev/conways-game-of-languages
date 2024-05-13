@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use conway::{self, conway::{Cell, Conway}};
+use conways_game_of_languages::{self, conway::{Cell, Conway}};
 
 fn get_cell_vec_tuple(game: &Conway) -> Vec<(u16, u16)> {
     let mut res: Vec<(u16, u16)> = vec![];

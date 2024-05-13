@@ -1,9 +1,9 @@
 use std::process;
 use std::{io, time::Duration};
 
-use ::conway::conway::Conway;
+use ::conways_game_of_languages::conway::Conway;
 
-use ::conway::pattern::{PATTERNS, Pattern, Patterns};
+use ::conways_game_of_languages::pattern::{PATTERNS, Pattern, Patterns};
 
 use clap::Parser;
 
