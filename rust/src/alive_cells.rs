@@ -24,3 +24,17 @@ impl AliveCells {
     return;
   }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn blinker_works() {
+        let blinker = AliveCells::new([(8, 7), (8, 8), (8, 9)].to_vec());
+        assert_eq!(blinker.cells, [(8, 7), (8, 8), (8, 9)].to_vec());
+        blinker.evolve();
+        assert_eq!(blinker.cells, [(7, 8), (8, 8), (9, 8)].to_vec());
+        // assert_eq!(result, 4);
+    }
+}

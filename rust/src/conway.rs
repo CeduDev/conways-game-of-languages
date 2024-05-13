@@ -1,24 +1,80 @@
-use std::{io::{self, stdout, Stdout, Write}, time::Duration, thread};
+use std::{io::{self, stdout, Stdout, Write}, thread, time::Duration};
 use crossterm::{
     execute, queue,
     style::{self}, cursor, terminal
 };
 
-use crate::alive_cells::AliveCells;
+#[repr(u8)]
+#[derive(PartialEq)]
+enum Cell {
+  DEAD = 0,
+  ALIVE = 1,
+}
 
 pub struct Conway {
   height: u16,
   width: u16,
   stdout: Stdout,
   text: String,
-  alive_cells: AliveCells,
-  alive: String,
-  dead: String,
+  cells: Vec<Cell>,
   generations: u16,
   delay: Duration
 }
 
 impl Conway {
+  pub fn new(width: u16, height: u16, mut alive_cells: Vec<(u16, u16)>, text: String, generations: u16, delay: Duration) -> Self {
+    let alive_cells_index: Vec<u16> = alive_cells.
+      iter_mut().
+      map(|i| i.1 * width + i.0)
+      .collect();
+
+    let cells: Vec<Cell> = (0..width * height)
+      .map(|i| {
+        if alive_cells_index.contains(&i) {
+          Cell::ALIVE
+        } else {
+          Cell::DEAD
+        }
+      })
+      .collect();
+
+    Conway {
+        height,
+        width,
+        stdout: stdout(),
+        text,
+        cells,
+        generations,
+        delay
+      }
+  }
+
+  fn get_cells_index(&self, row: u16, col: u16) -> usize {
+    (row * self.width + col) as usize
+  }
+
+  // Print all cells
+  fn print(&mut self) -> io::Result<()> {
+     // Grid
+    for row in 1..self.height {
+      for col in 0..self.width {
+        let idx = self.get_cells_index(row, col);
+        let cell = &self.cells[idx];
+        // in this loop we are more efficient by not flushing the buffer.
+        queue!(
+            self.stdout, 
+            cursor::MoveTo(col,row), 
+            style::Print(if *cell == Cell::DEAD { "‧".to_string() } else { "♥".to_string() })
+        )?;
+      }
+    }
+
+    self.stdout.flush()?;
+
+    Ok(())
+  }
+
+  // Print the pattern text
   pub fn init(&mut self) -> io::Result<()> {
     execute!(self.stdout, terminal::Clear(terminal::ClearType::All))?;
 
@@ -28,68 +84,20 @@ impl Conway {
       style::Print(&self.text)
     )?;
 
-    // Grid
-    for y in 1..self.height {
-        for x in 0..self.width {
-            // in this loop we are more efficient by not flushing the buffer.
-            if self.alive_cells.cells.contains(&(x, y)) {
-                queue!(
-                    self.stdout, 
-                    cursor::MoveTo(x,y), 
-                    style::Print(self.alive.as_str())
-                )?;
-            } else {
-                queue!(
-                    self.stdout, 
-                    cursor::MoveTo(x,y), 
-                    style::Print(self.dead.as_str())
-                )?;                
-            }
-        }
-    }
-
-    self.stdout.flush()?;
+    self.print()?;
 
     Ok(())
   }
 
+  // Run the game
   pub fn run(&mut self) -> io::Result<()> {
-    self.init()?;
-
     for _ in 0..self.generations {
-      self.alive_cells.evolve();
-
-      for c in 0..self.alive_cells.cells.len() - 1 {
-          let cell = self.alive_cells.cells[c];
-          queue!(
-            self.stdout,
-            cursor::MoveTo(cell.0, cell.1),
-            style::Print(self.alive.as_str())
-          )?;
-      }      
-
-      self.stdout.flush()?;
-
+      // self.alive_cells.evolve();
+      self.print()?;
       thread::sleep(self.delay)
     }
 
 
     Ok(())
-  }
-}
-
-impl Default for Conway {
-  fn default() -> Self {
-      Conway {
-        height: 20,
-        width: 40,
-        stdout: stdout(),
-        text: "Blinker Pattern".to_string(),
-        alive_cells: AliveCells::new([(8, 7), (8, 8), (8, 9)].to_vec()),
-        alive: "♥".to_string(),
-        dead: "‧".to_string(),
-        generations: 10,
-        delay: Duration::from_secs_f32(0.2)
-      }
   }
 }
