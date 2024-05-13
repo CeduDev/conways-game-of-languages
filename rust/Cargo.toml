@@ -1,7 +1,9 @@
 [package]
-name = "conway"
+name = "conways-game-of-languages"
 version = "0.1.0"
 edition = "2021"
+description = "Conway's Game of Life written in Rust"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
