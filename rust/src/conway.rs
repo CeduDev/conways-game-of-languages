@@ -1,4 +1,4 @@
-use std::{io::{self, stdout, Stdout, Write}, thread, time::Duration};
+use std::{cmp::min, io::{self, stdout, Stdout, Write}, thread, time::Duration};
 use crossterm::{
     execute, queue,
     style::{self}, cursor, terminal
@@ -68,11 +68,11 @@ impl Conway {
 
   // Print all cells
   fn print(&mut self) -> io::Result<()> {
-    let hud_text = self.text.clone() + ", Generation: " + self.current_generation.to_string().as_str();
+    let hud_text = self.text.clone() + " Pattern, Generation: " + self.current_generation.to_string().as_str();
 
     queue!(
       self.stdout,
-      cursor::MoveTo((self.width - hud_text.len() as u16) / 2, self.height),
+      cursor::MoveTo( (self.width - min(hud_text.len(), self.width as usize) as u16) / 2, self.height),
       style::Print(hud_text)
     )?;
 

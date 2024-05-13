@@ -34,6 +34,50 @@ fn get_cell_vec_tuple(game: &Conway) -> Vec<(u16, u16)> {
     game.evolve();
     let c2: Vec<(u16, u16)> = get_cell_vec_tuple(&game);
     let e2: Vec<(u16, u16)> = [(0, 1), (1, 1), (2, 1)].to_vec();
-    // println!("{:?}", c2);
     assert!(c2.iter().all(|item| e2.contains(item)));
+    
+    game.evolve();
+    game.evolve();
+    game.evolve();
+    game.evolve();
+    game.evolve();
+    let c3: Vec<(u16, u16)> = get_cell_vec_tuple(&game);
+    assert!(c3.iter().all(|item| init_vec.contains(item)));
+  }
+
+  #[test]
+  fn toad_word() {
+    let init_vec: Vec<(u16, u16)> = [(2, 2), (2, 3), (2, 4), (3, 1), (3, 2), (3, 3)].to_vec();
+    let mut game = Conway::new(
+      8, 
+      8,
+      init_vec.clone(), 
+      "Toad Pattern".to_string(),
+      10,
+      Duration::from_secs_f32(0.2)
+    );
+
+    let c1: Vec<(u16, u16)> = get_cell_vec_tuple(&game);
+    assert!(c1.iter().all(|item| init_vec.contains(item)));
+    
+    game.evolve();
+    let c2: Vec<(u16, u16)> = get_cell_vec_tuple(&game);
+    let e2: Vec<(u16, u16)> = [
+      (2, 1),
+      (3, 1),
+      (4, 2),
+      (1, 3),
+      (2, 4),
+      (3, 4),
+    ].to_vec();
+
+    assert!(c2.iter().all(|item| e2.contains(item)));
+    
+    game.evolve();
+    game.evolve();
+    game.evolve();
+    game.evolve();
+    game.evolve();
+    let c3: Vec<(u16, u16)> = get_cell_vec_tuple(&game);
+    assert!(c3.iter().all(|item| init_vec.contains(item)));
   }
