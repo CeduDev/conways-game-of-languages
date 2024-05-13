@@ -1,5 +1,9 @@
 {
   "rust-analyzer.linkedProjects": [
     "./rust/Cargo.toml"
+  ],
+  "cSpell.words": [
+    "numpy",
+    "venv"
   ]
 }
