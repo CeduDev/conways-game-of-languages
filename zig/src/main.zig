@@ -1,10 +1,10 @@
 const std = @import("std");
 const print = std.debug.print;
 const sleep = std.time.sleep;
-const c = @import("conway.zig");
-const Conway = c.Conway;
-const Cell = c.Cell;
-const Coordinate = c.Coordinate;
+const conway = @import("conway.zig");
+const Conway = conway.Conway;
+const Cell = conway.Cell;
+const Coordinate = conway.Coordinate;
 
 fn clear_screen() !void {
     print("\x1B[2J\x1B[H", .{});
@@ -12,9 +12,13 @@ fn clear_screen() !void {
 
 pub fn main() !void {
     const init = comptime [_]Coordinate{ .{ .x = 1, .y = 0 }, .{ .x = 1, .y = 1 }, .{ .x = 1, .y = 2 } };
-    const game: Conway = Conway.new(3, 3, &init, "jee", 2, 2);
+    var cells: [3 * 3]Cell = undefined;
+    const game: Conway = Conway.new(3, 3, &init, "jee", 2, 2, &cells);
 
-    _ = game; // autofix
+    for (game.cells) |c| {
+        print("{}\n", .{c});
+    }
+
     // _ = game; // autofix
 
     // const a = [9]u16{ 0, 1, 0, 0, 1, 0, 0, 1, 0 };

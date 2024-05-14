@@ -14,9 +14,8 @@ pub const Conway = struct {
     current_generation: u16,
     delay: u32,
 
-    pub fn new(comptime width: u16, comptime height: u16, comptime init_cells: []const Coordinate, text: []const u8, generations: u16, delay: u32) Conway {
+    pub fn new(comptime width: u16, comptime height: u16, comptime init_cells: []const Coordinate, text: []const u8, generations: u16, delay: u32, cells: []Cell) Conway {
         var init_cells_index: [init_cells.len]u16 = undefined;
-        var cells: [width * height]Cell = undefined;
 
         for (0.., init_cells) |i, c| {
             init_cells_index[i] = c.y * height + c.x;
@@ -26,12 +25,12 @@ pub const Conway = struct {
             cells[index] = Cell.ALIVE;
         }
 
-        for (&cells) |*cell| {
+        for (cells) |*cell| {
             if (cell == undefined) {
                 cell.* = Cell.DEAD;
             }
         }
 
-        return Conway{ .width = width, .height = height, .text = text, .cells = &cells, .generations = generations, .current_generation = 0, .delay = delay };
+        return Conway{ .width = width, .height = height, .text = text, .cells = cells, .generations = generations, .current_generation = 0, .delay = delay };
     }
 };
