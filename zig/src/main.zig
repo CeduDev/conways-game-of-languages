@@ -6,55 +6,50 @@ const Conway = conway.Conway;
 const Cell = conway.Cell;
 const Coordinate = conway.Coordinate;
 
-fn clear_screen() !void {
-    print("\x1B[2J\x1B[H", .{});
-}
-
 pub fn main() !void {
     const init = comptime [_]Coordinate{ .{ .x = 1, .y = 0 }, .{ .x = 1, .y = 1 }, .{ .x = 1, .y = 2 } };
     // Initialize a 3 * 3 array of DEAD Cells
     var cells: [3 * 3]Cell = .{Cell.DEAD} ** 9;
-    const game: Conway = Conway.new(3, 3, &init, "jee", 2, 2, &cells);
 
-    for (game.cells) |c| {
-        print("{}\n", .{c});
-    }
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+    const game = try Conway.init(allocator, 3, 3, &init, "jee", 10, 1, &cells);
 
-    // _ = game; // autofix
-
-    // const a = [9]u16{ 0, 1, 0, 0, 1, 0, 0, 1, 0 };
-    // const width = 3;
-    // const height = 3;
-    // _ = height; // autofix
-    // var b: u16 = 1;
-    // const ns_to_s: u32 = 1000000000;
-
-    // try clear_screen();
-
-    // inline for (0.., a) |i, elem| {
-    //     print(if (elem == 1) "♥" else "‧", .{});
-    //     if ((i + 1) % width == 0) {
-    //         print("\n", .{});
-    //     }
-    // }
-
-    // print("Generation: {}\n", .{b});
-
-    // b += 1;
-
-    // sleep(1 * ns_to_s);
-
-    // try clear_screen();
-
-    // inline for (0.., a) |i, elem| {
-    //     print(if (elem == 1) "♥" else "‧", .{});
-    //     if ((i + 1) % width == 0) {
-    //         print("\n", .{});
-    //     }
-    // }
-
-    // print("Generation: {}\n", .{b});
+    game.run();
 }
+
+// const a = [9]u16{ 0, 1, 0, 0, 1, 0, 0, 1, 0 };
+// const width = 3;
+// const height = 3;
+// _ = height; // autofix
+// var b: u16 = 1;
+// const ns_to_s: u32 = 1000000000;
+
+// try clear_screen();
+
+// inline for (0.., a) |i, elem| {
+//     print(if (elem == 1) "♥" else "‧", .{});
+//     if ((i + 1) % width == 0) {
+//         print("\n", .{});
+//     }
+// }
+
+// print("Generation: {}\n", .{b});
+
+// b += 1;
+
+// sleep(1 * ns_to_s);
+
+// try clear_screen();
+
+// inline for (0.., a) |i, elem| {
+//     print(if (elem == 1) "♥" else "‧", .{});
+//     if ((i + 1) % width == 0) {
+//         print("\n", .{});
+//     }
+// }
+
+// print("Generation: {}\n", .{b});
 
 // pub fn main() !void {
 //     // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
