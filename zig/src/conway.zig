@@ -30,7 +30,7 @@ pub const Conway = struct {
 
         const res = try allocator.create(Self);
 
-        res.* = .{ .width = width, .height = height, .text = text, .cells = cells, .generations = generations, .current_generation = 0, .delay = delay_in_seconds * ns_to_s };
+        res.* = Self{ .width = width, .height = height, .text = text, .cells = cells, .generations = generations, .current_generation = 0, .delay = delay_in_seconds * ns_to_s };
 
         return res;
     }
