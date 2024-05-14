@@ -12,7 +12,8 @@ fn clear_screen() !void {
 
 pub fn main() !void {
     const init = comptime [_]Coordinate{ .{ .x = 1, .y = 0 }, .{ .x = 1, .y = 1 }, .{ .x = 1, .y = 2 } };
-    var cells: [3 * 3]Cell = undefined;
+    // Initialize a 3 * 3 array of DEAD Cells
+    var cells: [3 * 3]Cell = .{Cell.DEAD} ** 9;
     const game: Conway = Conway.new(3, 3, &init, "jee", 2, 2, &cells);
 
     for (game.cells) |c| {
