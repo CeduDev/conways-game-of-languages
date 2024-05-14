@@ -13,7 +13,7 @@ pub fn main() !void {
 
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
-    const game = try Conway.init(allocator, 3, 3, &init, "jee", 10, 1, &cells);
+    const game = try Conway.init(allocator, 3, 3, &init, "jee", 10, 500, &cells);
 
     game.run();
 }
