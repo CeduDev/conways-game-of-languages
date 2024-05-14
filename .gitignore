@@ -1,1 +1,8 @@
 /rust/target
+/zig/zig-cache/
+/zig/zig-out/
+/zig//release/
+/zig//debug/
+/zig//build/
+/zig//build-*/
+/zig//docgen_tmp/
