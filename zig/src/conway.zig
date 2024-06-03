@@ -99,7 +99,7 @@ pub const Conway = struct {
         return count;
     }
 
-    fn evolve(self: *Self) !void {
+    pub fn evolve(self: *Self) !void {
         const next_generation: []Cell = try self.allocator.alloc(Cell, self.cells.len);
         defer self.allocator.free(next_generation);
 
